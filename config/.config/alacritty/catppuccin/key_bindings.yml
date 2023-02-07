@@ -1,0 +1,34 @@
+# TODO: Support swapping focuses using Command+Direction
+# TODO: Migrate to tmux binds to tmux.conf, remap Command here as some control sequence
+
+key_bindings:
+  # Native Alacritty Bindings
+  - { key: C,      mods: Command,       action: Copy             } # Copy something.
+  - { key: V,      mods: Command,       action: Paste            } # Paste something.
+  - { key: Escape, mods: Command,       action: ToggleViMode     } # Enter Vi mode.
+  - { key: Key0,   mods: Command,       action: ResetFontSize    } # Reset the font size to default.
+  - { key: Equals, mods: Command,       action: IncreaseFontSize } # Increase the font size.
+  - { key: Minus,  mods: Command,       action: DecreaseFontSize } # Decrease the font size.
+  # Tmux Bindings - manually alias <C-B> (\x02) to Command until we have a better solution.
+  ## For Panes:
+  - { key: D,      mods: Command|Shift, chars: "\x02%"           } # Split the pane horizontally.
+  - { key: D,      mods: Command,       chars: "\x02\""          } # Split the pane vertically.
+
+  - { key: Left,   mods: Command,       chars: "\x08"            } # Focus the pane to the left.
+  - { key: Down,   mods: Command,       chars: "\x0a"            } # Focus the pane below.
+  - { key: Up,     mods: Command,       chars: "\x0b"            } # Focus the pane above.
+  - { key: Right,  mods: Command,       chars: "\x0c"            } # Focus the pane to the right.
+  - { key: P,      mods: Command,       chars: "\x02p"           } # Focus the next pane.
+  - { key: N,      mods: Command,       chars: "\x02n"           } # Focus the previous pane.
+
+  - { key: Return, mods: Command|Shift, chars: "\x02z"           } # Bring the current pane to the foreground.
+  - { key: Left,   mods: Command|Shift, chars: "\x02{"           } # Swap the current pane to the left.
+  - { key: Right,  mods: Command|Shift, chars: "\x02}"           } # Swap the current pane to the right.
+
+  - { key: W,      mods: Command,       chars: "\x02x"           } # Kill the current pane.
+  ## For Windows:
+  - { key: T,      mods: Command|Shift, chars: "\x02c"           } # Create a new window.
+  - { key: Tab,    mods: Shift,         chars: "\x02w"           } # Open a GUI to switch windows.
+  - { key: W,      mods: Command|Shift, chars: "\x02&"           } # Kill the current window.
+  ## For Sessions:
+  ### None yet!

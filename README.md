@@ -1,2 +1,2 @@
 # dotfiles
-My dotfiles for ease of access &amp; maintenance.
+My dotfiles. Deployment managed by GNU stow.
