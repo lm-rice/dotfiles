@@ -12,14 +12,16 @@ local disable_distribution_plugins = function()
 	-- Do not load spell files
 	vim.g.loaded_spellfile_plugin = 1
 
-	-- Whether to load netrw by default
+	-- Whether to load netrw by default (disable once we setup treesitter)
+	--[[
 	 vim.g.loaded_netrw = 1
 	 vim.g.loaded_netrwFileHandlers = 1
 	 vim.g.loaded_netrwPlugin = 1
 	 vim.g.loaded_netrwSettings = 1
+	 ]]--
 
-	-- newtrw liststyle: https://medium.com/usevim/the-netrw-style-options-3ebe91d42456
-	vim.g.netrw_liststyle = 3
+    -- press "i" to swap between the netrw styles
+	vim.g.netrw_liststyle = 1
 
 	-- Do not load tohtml.vim
 	vim.g.loaded_2html_plugin = 1
