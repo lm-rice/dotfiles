@@ -11,10 +11,18 @@ export VISUAL="nvim"
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=10000
 export SAVEHIST=10000
+export MANPAGER='nvim +Man!'
 
 # Enable vim mode
 bindkey -v
 export KEYTIMEOUT=1
+
+# Explicitly enable backward search (fixes tmux)
+bindkey '^R' history-incremental-search-backward
+
+# Enable zsh completion (lazy)
+autoload -U compinit; compinit
+_comp_options+=(globdots)
 
 # Easy navigation using the directory stack
 # Based on https://thevaluable.dev/zsh-install-configure-mouseless/
