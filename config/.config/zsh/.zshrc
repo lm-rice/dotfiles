@@ -1,4 +1,5 @@
 # Prevent the path from accumulating if manually sourcing this file
+# TODO: We can probably remove this in favor of some kind of XDG trick.
 if (( zsh_eval_context[(I)file] )); then 
     unset PATH
     [ -f /etc/zprofile ] && source /etc/zprofile 
@@ -8,10 +9,13 @@ fi
 # Terminal defaults
 export EDITOR="nvim"
 export VISUAL="nvim"
-export HISTFILE="$HOME/.zsh_history"
+export HISTFILE="$XDG_DATA_HOME/.zsh_history"
 export HISTSIZE=10000
 export SAVEHIST=10000
 export MANPAGER='nvim +Man!'
+
+# Wezterm-specific constants
+export WEZTERM_CONFIG_FILE="$XDG_CONFIG_HOME/wezterm/wezterm.lua"
 
 # Enable vim mode
 bindkey -v
@@ -21,8 +25,12 @@ export KEYTIMEOUT=1
 bindkey '^R' history-incremental-search-backward
 
 # Enable zsh completion (lazy)
-autoload -U compinit; compinit
+mkdir -p "$XDG_CACHE_HOME/zsh"
+autoload -U compinit; compinit -d "$XDG_CACHE_HOME/zsh/.zcompdump"
 _comp_options+=(globdots)
+
+# cd to directories without typing cd
+setopt AUTO_CD
 
 # Easy navigation using the directory stack
 # Based on https://thevaluable.dev/zsh-install-configure-mouseless/
@@ -34,7 +42,7 @@ for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
 # Saved directories for ease of access
 alias dl="cd $HOME/Downloads;"
-alias projects="cd $HOME/Projects;"
+alias p="cd $HOME/Projects;"
 
 # Navigate up a long directory tree - probably won't use more than 5.
 alias ..="cd ..;"
@@ -72,6 +80,10 @@ alias glol='git log --graph --oneline --decorate'
 # TODO shove these in an array w/ for loop to make this easier to type
 PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin${PATH+:$PATH}"
 PATH="$HOMEBREW_PREFIX/opt/python@3.10/libexec/bin${PATH+:$PATH}"
+PATH="$HOMEBREW_PREFIX/opt/openjdk@11/bin:${PATH+:$PATH}"
+PATH="$HOME/.cargo/bin${PATH+:$PATH}"
 PATH="$HOME/bin${PATH+:$PATH}"
 export PATH
+
+[ -f $HOME/.zshrc ] && source $HOME/.zshrc 
 

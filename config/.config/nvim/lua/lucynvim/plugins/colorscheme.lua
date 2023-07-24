@@ -1,4 +1,3 @@
--- Stolen from https://github.com/ayamir/nvimdots/blob/0e47a512827395781daea8c62efa6297c685b658/lua/modules/ui/config.lua
 local config = {}
 
 function config.catppuccin()
@@ -33,6 +32,7 @@ function config.catppuccin()
 		},
 		integrations = {
 			treesitter = true,
+            --[[
 			native_lsp = {
 				enabled = true,
 				virtual_text = {
@@ -48,6 +48,7 @@ function config.catppuccin()
 					information = { "underline" },
 				},
 			},
+            ]]--
 			aerial = false,
 			barbar = false,
 			beacon = false,
@@ -73,7 +74,7 @@ function config.catppuccin()
 			navic = { enabled = false },
 			neogit = false,
 			neotest = false,
-			neotree = { enabled = false, show_root = true, transparent_panel = false },
+            nvimtree = { enabled = true, show_root = true, transparent_panel = true },
 			noice = false,
 			notify = true,
 			nvimtree = true,

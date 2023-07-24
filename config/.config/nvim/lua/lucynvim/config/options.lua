@@ -1,3 +1,4 @@
+-- This file is automatically loaded by lucynvim.config.init --
 -- Prefer color scheme for coloring
 vim.opt.termguicolors = true
 

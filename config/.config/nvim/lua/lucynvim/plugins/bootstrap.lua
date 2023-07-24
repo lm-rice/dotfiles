@@ -17,18 +17,21 @@ vim.opt.rtp:prepend(lazypath)
 -------------
 -- Plugins --
 -------------
+local editor_config = require("lucynvim.plugins.editor.config");
+local lsp_config = require("lucynvim.plugins.lsp.config");
+local colorscheme_config = require("lucynvim.plugins.colorscheme");
 local plugins = {
     -- Editor status bar --
     {
         "nvim-lualine/lualine.nvim",
-        config = require("modules.editor.config").lualine,
+        config = editor_config.lualine,
     },
     -- Highlighting --
     {
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
         event = "BufReadPost",
-        config = require("modules.editor.config").nvim_treesitter,
+        config = editor_config.nvim_treesitter,
         dependencies = {
             "nvim-treesitter/nvim-treesitter-refactor",
             "RRethy/nvim-treesitter-textsubjects",
@@ -36,10 +39,21 @@ local plugins = {
         { "RRethy/nvim-treesitter-endwise" },
     },
 
+    --[[
+    -- File Browser -- 
+    {
+        "nvim-tree/nvim-tree.lua",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = require("modules.editor.config").nvim_tree,
+    },
+    --]]
+
     -- Completion -- 
     {
         "hrsh7th/nvim-cmp",
-        config = require("modules.lsp.config").cmp,
+        config = lsp_config.cmp,
         dependencies = {
             'L3MON4D3/LuaSnip',
             {'hrsh7th/cmp-buffer', after = 'nvim-cmp'},
@@ -53,31 +67,22 @@ local plugins = {
         },
     },
 
-    -- LSP -- ; requires is probably breaking me
+    -- LSP --
     {
         "neovim/nvim-lspconfig",
         "folke/trouble.nvim",
         "ray-x/lsp_signature.nvim",
-        "kosayoda/nvim-lightbulb", 
+        "kosayoda/nvim-lightbulb",
     },
 
     -- Colorscheme --
     {
 	    "catppuccin/nvim",
-	    as = "catppuccin", 
-        config = require("modules.colorscheme.config").catppuccin,
+	    as = "catppuccin",
+        config = colorscheme_config.catppuccin,
     },
-
-    -- File Browser --
-    --[[
-    {
-        "nvim-tree/nvim-tree.lua",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        }, 
-    },
-    ]]
 }
 
 -- Start & define local plugin path
 require("lazy").setup(plugins, { dev = { path = "~/Projects/neovim-plugins/" } })
+
