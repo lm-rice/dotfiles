@@ -51,6 +51,7 @@ local plugins = {
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local default_servers = {
                 "racket_langserver",
+                "dockerls",
             }
 
             for _, lsp in pairs(default_servers) do
@@ -69,6 +70,7 @@ local plugins = {
             })
 
             lspconfig["lua_ls"].setup({
+                on_attach = function() vim.api.nvim_set_hl(0, "@lsp.type.comment", {}) end,
                 single_file_support = true,
                 settings = {
                     Lua = {
@@ -120,6 +122,15 @@ local plugins = {
                             indent_size = "2",
                             continuation_indent_size = "2",
                         },
+                    },
+                },
+            })
+
+            lspconfig["yamlls"].setup({
+                capabilities = capabilities;
+                settings = {
+                    yaml = {
+                        keyOrdering = false,
                     },
                 },
             })
