@@ -50,7 +50,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
--- Check spelling in filetypes.
+-- Check spelling in Git commits and markdown files
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("wrap_spell"),
   pattern = { "gitcommit", "markdown" },

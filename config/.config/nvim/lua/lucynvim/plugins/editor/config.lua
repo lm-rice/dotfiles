@@ -3,7 +3,7 @@ local config = {}
 function config.lualine()
     require("lualine").setup({
         icons_enabled = true,
-        theme = "onedark",
+        theme = "everforest",
         sections = {
             lualine_a = {'mode'},
             lualine_b = {'filename'},

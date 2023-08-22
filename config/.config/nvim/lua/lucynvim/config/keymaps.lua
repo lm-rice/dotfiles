@@ -51,5 +51,9 @@ map("v", "<Tab>", ">gv")
 map("v", "<S-Tab>", "<gv")
 
 -- Move lines up and down
-map("n", "<S-K>", ":m-2<CR>")
-map("n", "<S-J>", ":m+<CR>")
+map("n", "<S-K>", ":m-2<CR>", { desc = "Move a line up", remap = false, silent = true})
+map("n", "<S-J>", ":m+<CR>", { desc = "Move a line down", remap = false, silent = true})
+
+-- Move code blocks up and down
+-- map("x", "<S-K>", ":m '>+1<CR>gv=gv", { desc = "Move a code block up", remap = false, silent = true})
+-- map("x", "<S-J>", ":m '<-2<CR>gv=gv", { desc = "Move a code block down", remap = false, silent = true})

@@ -2,37 +2,29 @@ local wezterm = require 'wezterm'
 local config = {}
 
 -- Display
-config.color_scheme = 'Catppuccin Mocha'
+config.color_scheme = 'Everblush'
 config.font = wezterm.font 'Hack Nerd Font'
 config.window_padding = {
-    left = 5,
-    right = 5,
+    left = 15,
+    right = 15,
     top = 35, -- Large because of the location of the MBP camera.
     bottom = 0
 }
---[[
-config.background = {
-    {
-        source = {
-            File = '/Users/carazoa/Pictures/Wallpapers/3840x2160-stains-purple-gradient-colorful-4k_1539369945.jpg'
-        },
-        repeat_x = 'NoRepeat',
-        repeat_y = 'NoRepeat',
-    },
-}
---]]
--- Windows
---config.window_decorations = "RESIZE"
+
+-- Windows --
+config.window_decorations = "RESIZE"
 config.window_close_confirmation = 'NeverPrompt'
+config.window_background_opacity = 0.9
 
 -- Functionality --
 config.enable_tab_bar = false
+config.audible_bell = "Disabled"
 
 -- Keymaps --
 config.keys = {
     -- Display Bindings --
     {
-        key     = 'n',
+        key     = 'f',
         mods    = 'SUPER|SHIFT',
         action  = wezterm.action.ToggleFullScreen
     },

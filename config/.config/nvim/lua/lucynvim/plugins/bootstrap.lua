@@ -17,9 +17,9 @@ vim.opt.rtp:prepend(lazypath)
 -------------
 -- Plugins --
 -------------
-local editor_config = require("lucynvim.plugins.editor.config");
-local lsp_config = require("lucynvim.plugins.lsp.config");
-local colorscheme_config = require("lucynvim.plugins.colorscheme");
+local editor_config = require("lucynvim.plugins.editor.config")
+local lsp_config = require("lucynvim.plugins.lsp.config")
+local colorscheme_config = require("lucynvim.plugins.colorscheme")
 local plugins = {
     -- Editor status bar --
     {
@@ -39,21 +39,97 @@ local plugins = {
         { "RRethy/nvim-treesitter-endwise" },
     },
 
-    --[[
-    -- File Browser -- 
+    -- LSP Servers --
     {
-        "nvim-tree/nvim-tree.lua",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
+        "neovim/nvim-lspconfig",
+        event = "BufReadPre",
+        opts = {
+            inlay_hints = { enabled = true },
         },
-        config = require("modules.editor.config").nvim_tree,
+        config = function()
+            local lspconfig = require("lspconfig")
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local default_servers = {
+                "racket_langserver",
+            }
+
+            for _, lsp in pairs(default_servers) do
+                lspconfig[lsp].setup({
+                    -- TODO look into on_attach https://github.com/edr3x/.dotfiles/blob/master/nvim/.config/nvim/lua/r3x/plugins/lsp.lua
+                    capabilities = capabilities
+                })
+            end
+
+            lspconfig["clangd"].setup({
+                capabilities = capabilities,
+            })
+
+            lspconfig["bashls"].setup({
+                filetypes = { "sh", "zsh" },
+            })
+
+            lspconfig["lua_ls"].setup({
+                single_file_support = true,
+                settings = {
+                    Lua = {
+                        workspace = {
+                            library = { vim.env.VIMRUNTIME },
+                            checkThirdParty = false,
+                        },
+                        completion = { workspaceWord = true, callSnippet = "Both" },
+                    },
+                    misc = {
+                        parameters = {
+                            -- "--log-level=trace",
+                        },
+                    },
+                    hint = {
+                        enable = true,
+                        setType = false,
+                        paramType = true,
+                        paramName = "Disable",
+                        semicolon = "Disable",
+                        arrayIndex = "Disable",
+                    },
+                    doc = { privateName = { "^_" } },
+                    type = { castNumberToInteger = true },
+                    diagnostics = {
+                        disable = { "incomplete-signature-doc", "trailing-space" },
+                        -- enable = false,
+                        groupSeverity = { strong = "Warning", strict = "Warning" },
+                        groupFileStatus = {
+                          ["ambiguity"] = "Opened",
+                          ["await"] = "Opened",
+                          ["codestyle"] = "None",
+                          ["duplicate"] = "Opened",
+                          ["global"] = "Opened",
+                          ["luadoc"] = "Opened",
+                          ["redefined"] = "Opened",
+                          ["strict"] = "Opened",
+                          ["strong"] = "Opened",
+                          ["type-check"] = "Opened",
+                          ["unbalanced"] = "Opened",
+                          ["unused"] = "Opened",
+                        },
+                        unusedLocalExclude = { "_*" },
+                    },
+                    format = {
+                        enable = false,
+                        defaultConfig = {
+                            indent_style = "space",
+                            indent_size = "2",
+                            continuation_indent_size = "2",
+                        },
+                    },
+                },
+            })
+        end
     },
-    --]]
 
     -- Completion -- 
     {
         "hrsh7th/nvim-cmp",
-        config = lsp_config.cmp,
+        event = "InsertEnter",
         dependencies = {
             'L3MON4D3/LuaSnip',
             {'hrsh7th/cmp-buffer', after = 'nvim-cmp'},
@@ -65,21 +141,14 @@ local plugins = {
             'lukas-reineke/cmp-under-comparator',
             {'hrsh7th/cmp-nvim-lsp-document-symbol', after = 'nvim-cmp'},
         },
-    },
-
-    -- LSP --
-    {
-        "neovim/nvim-lspconfig",
-        "folke/trouble.nvim",
-        "ray-x/lsp_signature.nvim",
-        "kosayoda/nvim-lightbulb",
+        config = lsp_config.cmp,
     },
 
     -- Colorscheme --
     {
-	    "catppuccin/nvim",
-	    as = "catppuccin",
-        config = colorscheme_config.catppuccin,
+        "Everblush/nvim",
+        name = 'everblush',
+        config = colorscheme_config.everblush,
     },
 }
 

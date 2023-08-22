@@ -1,8 +1,9 @@
+#!/usr/bin/env zsh
 # Prevent the path from accumulating if manually sourcing this file
 # TODO: We can probably remove this in favor of some kind of XDG trick.
-if (( zsh_eval_context[(I)file] )); then 
+if (( zsh_eval_context[(I)file] )); then
     unset PATH
-    [ -f /etc/zprofile ] && source /etc/zprofile 
+    [ -f /etc/zprofile ] && source /etc/zprofile
     [ -f /etc/zshrc ] && source /etc/zshrc
 fi
 
@@ -37,8 +38,8 @@ setopt AUTO_CD
 setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
 setopt PUSHD_SILENT
-alias d="dirs -v"
-for index ({1..9}) alias "$index"="cd +${index}"; unset index
+alias d="dirs -v | head -n 10"
+for index ({0..9}) alias "$index"="cd +${index}"; unset index
 
 # Saved directories for ease of access
 alias dl="cd $HOME/Downloads;"
@@ -62,6 +63,9 @@ alias la="ls -ltra"
 alias vizshrc="nvim $ZDOTDIR/.zshrc"
 alias rlzshrc="source $ZDOTDIR/.zshrc"
 
+# Wezterm-specific aliases
+alias imgcat="wezterm imgcat"
+
 # Git command shortcuts
 alias gs='git status'
 alias ga='git add'
@@ -80,7 +84,7 @@ alias glol='git log --graph --oneline --decorate'
 # TODO shove these in an array w/ for loop to make this easier to type
 PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin${PATH+:$PATH}"
 PATH="$HOMEBREW_PREFIX/opt/python@3.10/libexec/bin${PATH+:$PATH}"
-PATH="$HOMEBREW_PREFIX/opt/openjdk@11/bin:${PATH+:$PATH}"
+PATH="$HOMEBREW_PREFIX/opt/openjdk@17/bin:${PATH+:$PATH}"
 PATH="$HOME/.cargo/bin${PATH+:$PATH}"
 PATH="$HOME/bin${PATH+:$PATH}"
 export PATH
