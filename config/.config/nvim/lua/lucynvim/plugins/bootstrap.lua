@@ -30,7 +30,7 @@ local plugins = {
     {
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
-        event = "BufReadPost",
+        event = "BufReadPre",
         config = editor_config.nvim_treesitter,
         dependencies = {
             "nvim-treesitter/nvim-treesitter-refactor",
@@ -38,15 +38,16 @@ local plugins = {
         },
         { "RRethy/nvim-treesitter-endwise" },
     },
-
     -- LSP Servers --
     {
         "neovim/nvim-lspconfig",
+        dependencies = { "folke/neodev.nvim" },
         event = "BufReadPre",
         opts = {
             inlay_hints = { enabled = true },
         },
         config = function()
+            require("neodev").setup()
             local lspconfig = require("lspconfig")
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local default_servers = {
@@ -136,6 +137,21 @@ local plugins = {
             })
         end
     },
+    -- vim-illuminate --
+    {
+        "RRethy/vim-illuminate",
+        event = "BufReadPost",
+        config = function()
+            require("illuminate").configure({
+                delay = 200,
+                large_file_cutoff = 2000,
+                large_file_overrides = {
+                    providers = { "lsp" },
+                },
+            })
+        end,
+    },
+
 
     -- Completion -- 
     {
