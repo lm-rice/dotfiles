@@ -41,9 +41,12 @@ setopt PUSHD_SILENT
 alias d="dirs -v | head -n 10"
 for index ({0..9}) alias "$index"="cd +${index}"; unset index
 
+# Directories I use or reference often.
+export PROJECTS_PATH="$HOME/Projects"
+
 # Saved directories for ease of access
 alias dl="cd $HOME/Downloads;"
-alias p="cd $HOME/Projects;"
+alias p="cd $PROJECTS_PATH;"
 
 # Navigate up a long directory tree - probably won't use more than 5.
 alias ..="cd ..;"
@@ -87,6 +90,7 @@ PATH="$HOMEBREW_PREFIX/opt/python@3.10/libexec/bin${PATH+:$PATH}"
 PATH="$HOMEBREW_PREFIX/opt/openjdk@17/bin:${PATH+:$PATH}"
 PATH="$HOME/.cargo/bin${PATH+:$PATH}"
 PATH="$HOME/bin${PATH+:$PATH}"
+PATH="$PROJECTS_PATH/scripts/${PATH+:$PATH}"
 export PATH
 
 [ -f $HOME/.zshrc ] && source $HOME/.zshrc 
