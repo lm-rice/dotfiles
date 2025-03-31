@@ -1,11 +1,19 @@
 #!/usr/bin/env zsh
-# Prevent the path from accumulating if manually sourcing this file
-# TODO: We can probably remove this in favor of some kind of XDG trick.
-if (( zsh_eval_context[(I)file] )); then
-    unset PATH
-    [ -f /etc/zprofile ] && source /etc/zprofile
-    [ -f /etc/zshrc ] && source /etc/zshrc
+
+# On first load, store the original PATH so we can reset it on reload.
+if [[ -z "$_ORIGINAL_PATH" ]]; then
+  _ORIGINAL_PATH=$PATH
 fi
+
+# When reloading the file manually (with rlzshrc or source variant), reset PATH.
+if (( zsh_eval_context[(I)file] )); then
+    PATH="$_ORIGINAL_PATH"
+fi
+
+# Check if the directory is already in PATH. If not, prepend it.
+add_to_path() {
+  [[ ":$PATH:" != *":$1:"* ]] && PATH="$1:$PATH"
+}
 
 # Terminal defaults
 export EDITOR="nvim"
@@ -56,14 +64,14 @@ alias .4="cd ../../../..;"
 alias .5="cd ../../../../..;"
 
 # Set-up editors
-alias vi="nvim"
-alias vim="nvim"
+alias vi="$EDITOR"
+alias vim="$EDITOR"
 alias sublime="open -a 'Sublime Text.app'"
 
 # Useful command shortcuts
 alias l="ls"
 alias la="ls -ltra"
-alias vizshrc="nvim $ZDOTDIR/.zshrc"
+alias vizshrc="$EDITOR $ZDOTDIR/.zshrc"
 alias rlzshrc="source $ZDOTDIR/.zshrc"
 
 # Wezterm-specific aliases
@@ -82,16 +90,22 @@ alias grs='git remote show'
 alias glo='git log --pretty="oneline"'
 alias glol='git log --graph --oneline --decorate'
 
-# User PATH Entries #
-# Not too happy with this. This is still manual.
-# TODO shove these in an array w/ for loop to make this easier to type
-PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin${PATH+:$PATH}"
-PATH="$HOMEBREW_PREFIX/opt/python@3.10/libexec/bin${PATH+:$PATH}"
-PATH="$HOMEBREW_PREFIX/opt/openjdk@17/bin:${PATH+:$PATH}"
-PATH="$HOME/.cargo/bin${PATH+:$PATH}"
-PATH="$HOME/bin${PATH+:$PATH}"
-PATH="$PROJECTS_PATH/scripts/${PATH+:$PATH}"
+# Rebuild PATH without accumulating duplicates.
+PATH="$_ORIGINAL_PATH"
+
+if [[ -n "$HOMEBREW_PREFIX" ]]; then
+  add_to_path "$HOMEBREW_PREFIX/bin"
+  add_to_path "$HOMEBREW_PREFIX/sbin"
+  add_to_path "$HOMEBREW_PREFIX/opt/python@3.10/libexec/bin"
+  add_to_path "$HOMEBREW_PREFIX/opt/openjdk@17/bin"
+fi
+
+add_to_path "$HOME/.cargo/bin"
+add_to_path "$HOME/bin"
+add_to_path "$PROJECTS_PATH/scripts"
+
 export PATH
 
+# Source the unmanaged .zshrc if it exists.
 [ -f $HOME/.zshrc ] && source $HOME/.zshrc 
 
